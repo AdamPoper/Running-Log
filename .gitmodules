@@ -1,0 +1,3 @@
+[submodule "runninglog"]
+	path = runninglog
+	url = ./frontend/runninglog

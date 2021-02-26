@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+
+    </head>
+    <script>
+        async function addRun() {
+            const options = {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({message: 'from the test page'})
+            };
+            const response = await fetch('/api/add-single-run', options);
+            const data = await response.json();
+            console.log(data);
+        }
+        addRun();
+    </script>
+    <body>
+        <h1>Hello World</h1>
+    </body>
+    
+</html>
