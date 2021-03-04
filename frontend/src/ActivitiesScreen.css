@@ -1,0 +1,73 @@
+.activities-screen {
+    display: flex;
+    flex-direction: column;
+    align-items: left;
+}
+.header {
+    text-align: center;
+    color: rgb(133, 133, 133, 0.8);
+    letter-spacing: 2px;
+    font-size: 36px;
+}
+
+.activities-viewer {
+    background: rgb(255, 255, 255, 0.6);
+    width: 50%;
+    height: 46vh;
+    border-radius: 20px;
+    overflow-y: scroll;    
+    padding: 10px;
+}
+.activity-viewer h1 {
+    font-size: 40px;
+}
+.activity-viewing {
+    display: flex;
+    flex-direction: row;
+}
+
+.filter-options {
+    margin-left: 2%;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+.filter-options h5 {
+    color: rgb(133, 133, 133, 0.8);
+    font-size: 24px;
+    letter-spacing: 1px;
+}
+
+.activity {
+    color: rgba(85, 85, 85);
+    font-size: 18px;
+    padding-bottom: 10px;
+    padding-top: 10px;
+    border-bottom: solid;
+    border-width: 1px;
+}
+.activity:hover {
+    cursor: pointer;
+}
+.run-info {
+    display: flex;
+    flex-direction: row;
+}
+.single-activity-view {
+    display: flex;
+    flex-direction: column;
+    width: 50%;
+    height: 46vh;
+    border-radius: 20px;
+    background: rgb(255, 255, 255, 0.6);
+    font-size: 32px;
+    padding: 20px;
+    color: rgba(83, 83, 83, 0.8);
+    margin-left: 10px;
+}
+
+@media screen and (max-height: 860px) {
+    .header {
+        font-size: 28px;
+        letter-spacing: 1px;
+    }
+}

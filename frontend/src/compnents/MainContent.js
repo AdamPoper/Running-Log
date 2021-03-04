@@ -2,6 +2,7 @@ import React from 'react';
 import Icon from './Icon.js';
 import RunScreen from './RunScreen.js';
 import WorkoutScreen from './WorkoutScreen.js';
+import ActivitiesScreen from './ActivityScreen.js';
 
 import '../App.css';
 
@@ -30,7 +31,7 @@ class MainContent extends React.Component {
             },
             {
                 title: 'Activities',
-                screen: <RunScreen />,
+                screen: <ActivitiesScreen />,
                 id: 2
             },
             {

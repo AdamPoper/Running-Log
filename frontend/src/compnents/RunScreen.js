@@ -1,6 +1,6 @@
 import React from 'react';
 import '../App.css';
-import '../Screen.css';
+import '../RunScreen.css';
 
 class RunScreen extends React.Component {
     constructor() {
@@ -22,51 +22,61 @@ class RunScreen extends React.Component {
         console.log(unit);
 
         const hours = document.getElementById('hours').value;
-        const mins = document.getElementById('mins').value;
-        const secs = document.getElementById('secs').value;
+        const mins  = document.getElementById('mins').value;
+        const secs  = document.getElementById('secs').value;
         if(isNaN(hours) || isNaN(mins) || isNaN(secs)) {
             console.log('No NaN values');
             return;
         }
+        
         console.log(hours);
         console.log(mins);
         console.log(secs);
 
-        const description = document.getElementById('desc').value;
-        console.log(description);
+        const dateControl = document.querySelector('input[type="date"]');
+        const date = dateControl.value;
+        console.log(date);
+
+        const desc = document.getElementById('desc').value;
+        console.log(desc);
         
+        const runData = {
+            distance: distance,
+            unit: unit,
+            time: {
+                hours: hours,
+                minutes: mins,
+                seconds: secs
+            },
+            date: date,
+            description: desc
+        };
+
         const options = {
             method: 'POST',
             headers : {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({message: 'from the run screen'})
+            body: JSON.stringify(runData)
         };
         const response = await fetch('/api/add-single-run', options);
         const res_data = await response.json();
         console.log(res_data);
     }
-
-    onDateChange() {
-
-    }
-
+    
     render() {
         return(
             <div className='screen'>
                 <h1>Run Screen</h1>
-                <input type="date" id="start" name="trip-start"
-                    value={"2020-07-22"} min="2020-01-01" max="2022-12-31" 
-                    onChange={ this.onDateChange
-                 }/>
                 <div className='run-screen'>
+                <input type="date" className='date-input'></input>
                     <div className='distance'>
                         <label>Distance</label>
                         <input type='text' id='distance'></input>
                         <label>Unit</label>
                         <select name='units' id='units'>
-                            <option value='miles'>Miles</option>
-                            <option value='kilos'>Kilometers</option>
+                            <option value='Miles'>Miles</option>
+                            <option value='Kilometers'>Kilometers</option>
                         </select>
                     </div>
                     <div className='time'>

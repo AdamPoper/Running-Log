@@ -1,0 +1,57 @@
+.workout-screen {
+    margin-left: 10%;
+}
+
+.workout-screen input {
+    font-size: 28px;
+    margin-left: 20px;
+    margin-right: 20px;
+    background: rgba(255, 255, 255, 0.8);
+    color: rgb(133, 133, 133, 0.8);
+    border-radius: 20px;
+    width: 20%;
+    border: rgb(199, 199, 199);
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
+
+.workout-screen label {
+    font-size: 32px;
+}
+
+.interval-distance {
+    display: flex;
+    flex-direction: row;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+.interval-unit {
+    margin-top: 20px;
+}
+
+.workout-screen input[type="text"] {
+    width: 15%;
+}
+
+.times {
+    display: flex;
+    flex-direction: column;
+}
+.times textarea {
+    margin-top: 0px;
+    border: none;
+    border-radius: 20px;
+    background: rgb(255, 255, 255, 0.6);
+    resize: none;
+    font-size: 16px;
+    color: rgb(133, 133, 133, 0.8);
+    padding: 10px;
+    width: 90%;
+}
+
+.description textarea {
+    width: 100%;
+}
