@@ -5,7 +5,7 @@ class Activity extends React.Component {
         super();
         this.state = {
             date: '',
-            runInfo: '',
+            activityInfo: '',
             description: ''
         };
         this.onSelectHandle = this.onSelectHandle.bind(this);
@@ -16,8 +16,8 @@ class Activity extends React.Component {
         this.setState({date: info.date});
         console.log(this.state.date);
 
-        this.setState({runInfo: info.displayString});
-        console.log(this.state.runInfo);
+        this.setState({activityInfo: info.displayString});
+        console.log(this.state.activityInfo);
 
         this.setState({description: info.description});
         console.log(this.state.description);
@@ -32,9 +32,9 @@ class Activity extends React.Component {
         return(
             <div className='activity' onClick={this.onSelectHandle}>
                 <p>{this.state.date}</p>
-                <div className='run-info'>
+                <div className='activity-info'>
                     <p>
-                        {this.state.runInfo}
+                        {this.state.activityInfo}
                     </p>                    
                 </div>                       
             </div>

@@ -26,10 +26,7 @@
     flex-direction: row;
     margin-top: 20px;
     margin-bottom: 20px;
-}
-
-.interval-unit {
-    margin-top: 20px;
+    align-items: center;
 }
 
 .workout-screen input[type="text"] {
@@ -54,4 +51,49 @@
 
 .description textarea {
     width: 100%;
+}
+
+@media screen and (max-width: 860px) {
+    .save-button {
+        font-size: 24px;
+        width: 25%;
+        margin-left: 40%;
+    }
+    .screen h1 {
+        font-size: 24px;
+        margin-bottom: 10px;
+    }
+    .workout-screen label {
+        font-size: 18px;
+        
+    }
+    
+    .workout-screen input {
+        width: 15%;
+        font-size: 16px;
+        margin: 0px;
+        padding: 0px;
+    }
+    .screen select {
+        font-size: 22px;
+        width: 45%;
+        padding-top: 3px;
+        padding-bottom: 3px;
+        padding-left: 5px;
+        margin-top: 20px;
+    }
+    .workout-screen {
+        margin-left: 0%;
+    }
+    .interval-distance select {
+        font-size: 16px;        
+    }
+    
+    .interval-distance input {
+        font-size: 16px;
+        min-width: 50px;
+        min-height: 30px;
+        margin-right: 10px;
+        padding: 3px;
+    }
 }

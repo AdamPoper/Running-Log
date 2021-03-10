@@ -30,11 +30,24 @@
     margin-left: 2%;
     margin-top: 10px;
     margin-bottom: 10px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
 }
 .filter-options h5 {
     color: rgb(133, 133, 133, 0.8);
     font-size: 24px;
     letter-spacing: 1px;
+    padding-right: 10px;
+}
+.filter-options select {
+    font-size: 20px;
+    font-family: 'Varela Round', sans-serif;
+    color: rgb(124, 124, 124);
+    background: rgba(255, 255, 255, 0.6);
+    border: none;
+    border-radius: 13px;
+    padding: 5px;
 }
 
 .activity {
@@ -48,7 +61,7 @@
 .activity:hover {
     cursor: pointer;
 }
-.run-info {
+.activity-info {
     display: flex;
     flex-direction: row;
 }
@@ -69,5 +82,8 @@
     .header {
         font-size: 28px;
         letter-spacing: 1px;
+    }
+    h5 {
+        font-size: 16px;
     }
 }

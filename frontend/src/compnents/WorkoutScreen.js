@@ -55,7 +55,7 @@ class WorkoutScreen extends React.Component {
                     <input type='date'></input>
                     <div className='interval-distance'>
                         <label>Interval Distance</label>
-                        <input type='text' id='distance'></input>
+                        <input type='text' id='distance'></input>                      
                         <label>Unit</label>
                         <select id='units'>
                             <option value='Mile'>Miles</option>
