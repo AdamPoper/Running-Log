@@ -6,6 +6,7 @@ const bodyParser = require('body-parser');
 const dotenv = require('dotenv');
 const Run = require('./models/Run.js');
 const Workout = require('./models/workout.js');
+const fs = require('fs');
 
 const app = express();
 dotenv.config();
@@ -28,12 +29,15 @@ mongoose.connect(db_uri,
         // mongoose.connect is async so we start the server when the db connects
         console.log('Connected to database');
         app.listen(PORT, () => console.log(`Listening on port ${PORT}`));
+        //addExistingRunData();
+
     }).catch((err) => console.log(err));
 
 app.use(express.static('public'));
 app.use(bodyParser.json({limit: '10mb'}));
 
 initActivities();
+
 
 /////////////////////////////
 //      debugging routes
@@ -158,7 +162,6 @@ function initActivities() {
 
 // Initialize all the workouts
 function initWorkouts(data) {
-    console.log(data);
     for(let i = 0; i < data.length; i++) {
         createWorkout(data[i]);
     }
@@ -226,7 +229,6 @@ function createRun(data) {
         activityType: 'run',
         id: run._id
     };
-    console.log(runData);
     activities.push(runData);
     sortActivitiesByDate();
 }
@@ -299,3 +301,41 @@ function compareDates(date1, date2) {
     }
     return false;
 }
+
+// temporary code to load existing run data into mongoDB
+
+async function addExistingRunData() {
+    fs.readFile('existingData.json', 'utf8', (err, data) => {
+        if(err)
+            throw err;
+        const runData = JSON.parse(data);
+        for(let i = 0; i < runData.length; i++) {
+            const run = new Run({
+                distance: runData[i].distance,
+                unit: 'miles',
+                date: runData[i].date,
+                time: runData[i].time,
+                description: " "
+            });
+            console.log(run);
+            run.save().then((result) => {
+                console.log('saved: ' + result);
+            }).catch((err) => console.log(err));
+        }
+    });
+}
+
+/*
+const run = new Run({
+        distance: runData.distance,
+        unit: runData.unit,
+        date: runData.date,
+        time: runData.time,
+        description: runData.description
+    });
+
+    run.save().then((result) => {
+        createRun(run);     // creates a run object to go into the activities array
+        response.json({result});  
+    }).catch((err) => console.log(err));
+*/
