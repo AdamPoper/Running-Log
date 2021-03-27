@@ -18,6 +18,7 @@ const activities = [];
 const PORT = process.env.PORT;
 const mongoPassword = process.env.PASSWORD;
 const db_uri = `mongodb+srv://adampoper:${mongoPassword}@runninglog.ztpbe.mongodb.net/RunningLogDatabase?retryWrites=true&w=majority`;
+//const db_uri = 'mongo "mongodb+srv://runninglog.ztpbe.mongodb.net/RunningLogDatabase" --username adampoper'
 // connects to the mongoDB database through mongoose
 mongoose.connect(db_uri, 
     {
@@ -29,14 +30,14 @@ mongoose.connect(db_uri,
         // mongoose.connect is async so we start the server when the db connects
         console.log('Connected to database');
         app.listen(PORT, () => console.log(`Listening on port ${PORT}`));
+        //deleteRecordFromDatabase({date: '2021-03-10'});
+        initActivities();
         //addExistingRunData();
 
     }).catch((err) => console.log(err));
 
 app.use(express.static('public'));
 app.use(bodyParser.json({limit: '10mb'}));
-
-initActivities();
 
 
 /////////////////////////////
@@ -146,9 +147,15 @@ app.post('/api/add-single-workout', (request, response) => {
     }).catch((err) => console.log(err));
 });
 
+
 ///////////////////////////////////
 // Program Utility Functions
 ///////////////////////////////////
+
+function deleteRecordFromDatabase(condition) {
+    Run.collection.deleteMany(condition);
+    console.log('deleted all entries that match ' + condition);
+}
 
 // Query all entrys from MongoDB and initialize them for the program
 function initActivities() {
@@ -178,12 +185,21 @@ function initRuns(data) {
 function createWorkout(data) {
     const workout = data;
     const splitCount = workout.times.length;
-    const splitAverage = calcSplitsAverage(workout.times);
-    const displayString = `${splitCount} x ${workout.intervalDistance} ${workout.unit} | ${splitAverage} Average`;
+    const splitAverageData = calcSplitsAverage(workout.times);
+    const displayString = `${splitCount} x ${workout.intervalDistance} ${workout.unit} | ${splitAverageData.str} Average`;
+    let totalDistance;
+    if(workout.unit === 'Kilometers')
+        totalDistance = (workout.intervalDistance * splitCount * 0.609);
+    else if(workout.unit === 'Meters')
+        totalDistance = (workout.intervalDistance * splitCount / 1000 * 0.609);
+    else
+        totalDistance = workout.intervalDistance * splitCount;
     const workoutData = {
         date: workout.date,
         description: workout.description,
         displayString,
+        totalDistance,
+        totalSeconds: splitAverageData.totalSeconds,
         id: workout._id,
         activityType: 'workout'
     };
@@ -192,14 +208,14 @@ function createWorkout(data) {
 }
 
 /*
-    Every object in the activities array, both runs and workouts contains a date, description, 
-    displayString to format the info, id, and an activity type
+    Every object in the activities array, both runs and workouts contains a date, description, totalDistance (in miles),
+    totalTime (in seconds), displayString to format the info, id, and an activity type
 */
 
 // create a run for the activities array based on run data from the database
 function createRun(data) {
     const run = data;        
-    const pace = calcRunPace(run.time, run.distance);
+    const paceData = calcRunPace(run.time, run.distance);
     let timeStr;
     if(run.time.hours === 0 || run.time.hours === null)
     {
@@ -221,11 +237,18 @@ function createRun(data) {
             secs = `0${secs}`;                        
         timeStr = `${run.time.hours}:${mins}:${secs}`;
     }
-    const displayString = `${run.distance} ${run.unit} ${timeStr} | ${pace} per ${run.unit.slice(0, -1)}`;
+    const displayString = `${run.distance} ${run.unit} ${timeStr} | ${paceData.pace} per ${run.unit.slice(0, -1)}`;
+    let totalDistance = run.distance;
+    if(run.unit === 'Kilometers') 
+        totalDistance *= 0.609;
+    let totalSeconds = paceData.totalSeconds;
+
     const runData = {            
         date: run.date,
         displayString,
         description: run.description,
+        totalDistance,
+        totalSeconds,
         activityType: 'run',
         id: run._id
     };
@@ -244,7 +267,7 @@ function calcRunPace(time, dist) {
     if(secs < 10)
         secs = `0${secs}`;
     const pace = (mins + ':' + secs);
-    return pace;
+    return {pace, totalSeconds};
 }
 
 // calculate average pace per split for a workout with the given splits
@@ -260,7 +283,8 @@ function calcSplitsAverage(splits) {
     let avgSecs = (avgTotalSeconds % 60).toFixed(2);
     if(avgSecs < 10)
         avgSecs = `0${avgSecs}`;
-    return `${avgMins}:${avgSecs}`;
+    const str = `${avgMins}:${avgSecs}`
+    return {str, totalSeconds};
 }
 
 // sort all the activities by their date from newest to oldest
