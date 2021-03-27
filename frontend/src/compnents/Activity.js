@@ -13,17 +13,11 @@ class Activity extends React.Component {
     componentDidMount() {
         const info = this.props.data;
 
-        this.setState({date: info.date});
-        console.log(this.state.date);
-
-        this.setState({activityInfo: info.displayString});
-        console.log(this.state.activityInfo);
-
-        this.setState({description: info.description});
-        console.log(this.state.description);
+        this.setState({date: info.date});        
+        this.setState({activityInfo: info.displayString});        
+        this.setState({description: info.description});        
     }
     
-
     onSelectHandle() {
         this.props.onClickCallback(this.state);
     }

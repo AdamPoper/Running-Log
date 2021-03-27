@@ -26,7 +26,7 @@
     flex-direction: row;
 }
 
-.filter-options {
+.sort-options {
     margin-left: 2%;
     margin-top: 10px;
     margin-bottom: 10px;
@@ -34,13 +34,13 @@
     flex-direction: row;
     align-items: center;
 }
-.filter-options h5 {
+.sort-and-filter h5 {
     color: rgb(133, 133, 133, 0.8);
     font-size: 24px;
     letter-spacing: 1px;
     padding-right: 10px;
 }
-.filter-options select {
+.sort-and-filter select {
     font-size: 20px;
     font-family: 'Varela Round', sans-serif;
     color: rgb(124, 124, 124);
@@ -76,6 +76,35 @@
     padding: 20px;
     color: rgba(83, 83, 83, 0.8);
     margin-left: 10px;
+    overflow-y: scroll;    
+
+}
+.sort-and-filter {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-around;
+}
+
+.filter-options {
+    display: flex;
+    flex-direction: row;
+}
+
+.reset-button {
+    border:none;
+    border-radius: 20px;
+    font-size: 20px;
+    color: white;
+    padding: 10px;
+    background: linear-gradient(to right top, 
+    rgba(13, 91, 238, 1.0),
+    rgba(38, 186, 255, 0.5));        
+}
+.reset-button:hover {
+    transform: scale(1.1);
+    transition: transform 0.3s;
+    cursor: pointer;
 }
 
 @media screen and (max-height: 860px) {
