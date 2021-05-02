@@ -2,6 +2,8 @@ import React from 'react';
 import '../ActivitiesScreen.css';
 import Activity from './Activity.js';
 import DateFilter from './DateFilter.js';
+import DistanceFilter from './DistanceFilter.js';
+import TimeFilter from './TimeFilter.js';
 
 class ActivitiesScreen extends React.Component{
     constructor() {
@@ -11,17 +13,14 @@ class ActivitiesScreen extends React.Component{
             selectedActivityData: {},
             sortedAndFilteredData: [],
             viewing: false,
-            filteringDate: false
+            filteringDate: false,
+            filteringDistance: false,
+            filteringTime: false
         };
         this.initActivityData       = this.initActivityData.bind(this);
-        this.setSelectedActivity    = this.setSelectedActivity.bind(this);
+        this.setSelectedActivity    = this.setSelectedActivity.bind(this);     
         this.sortOldest             = this.sortOldest.bind(this);
-        this.sortFurthest           = this.sortFurthest.bind(this);
-        this.sortShortest           = this.sortShortest.bind(this);
-        this.sortLongest            = this.sortLongest.bind(this);
-        this.sortQuickest           = this.sortQuickest.bind(this);
-        this.compareOldestDate      = this.compareOldestDate.bind(this);
-        this.sortNewest             = this.sortNewest.bind(this);
+        this.sortNewest             = this.sortNewest.bind(this);   
         this.onChangeSort           = this.onChangeSort.bind(this);
         this.onChangeFilter         = this.onChangeFilter.bind(this);
         this.filterRuns             = this.filterRuns.bind(this);
@@ -30,6 +29,14 @@ class ActivitiesScreen extends React.Component{
         this.filterDate             = this.filterDate.bind(this); 
         this.closeDateFilter        = this.closeDateFilter.bind(this);    
         this.applyDateFilter        = this.applyDateFilter.bind(this);
+        this.closeDistanceFilter    = this.closeDistanceFilter.bind(this);
+        this.applyDistanceFilter    = this.applyDistanceFilter.bind(this);
+        this.filterDistance         = this.filterDistance.bind(this);
+        this.filterTime             = this.filterTime.bind(this);
+        this.closeDateFilter        = this.closeDateFilter.bind(this);
+        this.applyTimeFilter        = this.applyTimeFilter.bind(this);
+        this.closeTimeFilter        = this.closeTimeFilter.bind(this);
+        this.selectionSort          = this.selectionSort.bind(this);
     }
     async initActivityData() {
         const response = await fetch('/api/all-activities');
@@ -62,7 +69,10 @@ class ActivitiesScreen extends React.Component{
                 if(date1Parts[2] > date2Parts[2]) {
                     return true;
                 }
-                else return false;
+                else if(date1Parts[2] === date2Parts[2]) 
+                    return true;
+                else    
+                    return false;
             }
             return false;
         }
@@ -83,100 +93,44 @@ class ActivitiesScreen extends React.Component{
                 if(date1Parts[2] < date2Parts[2]) {
                     return true;
                 }
-                else return false;
+                else if(date1Parts[2] == date2Parts[2])
+                    return true;
+                else
+                    return false;
             }
             return false;
         }
         return false;
     }
     // All the sorting algorithms use selection sort because that's the fastest sorting algorithm I know by heart
-    sortOldest() {
-        let data = this.state.sortedAndFilteredData;
-        for(let i = 0; i < data.length; i++) {
-            let oldest = i;
-            for(let j = i; j < data.length; j++) {
-                if(this.compareOldestDate(data[oldest].date, data[j].date)) {
-                    oldest = j;
-                }
-            }
-            const temp = data[i];
-            data[i] = data[oldest];
-            data[oldest] = temp;
-        }
-        this.setState({sortedAndFilteredData: data});
+    sortOldest(data1, data2) {
+        return (this.compareOldestDate(data1.date, data2.date));        
     }
-    sortNewest() {
-        let data = this.state.sortedAndFilteredData;
-        for(let i = 0; i < data.length; i++) {
-            let oldest = i;
-            for(let j = i; j < data.length; j++) {
-                if(this.compareNewestDate(data[oldest].date, data[j].date)) {
-                    oldest = j;
-                }
-            }
-            const temp = data[i];
-            data[i] = data[oldest];
-            data[oldest] = temp;
-        }
-        this.setState({sortedAndFilteredData: data});
+    sortNewest(data1, data2) {
+        return (this.compareNewestDate(data1.date, data2.date));        
     }
-    sortFurthest() {
-        let data = this.state.sortedAndFilteredData;
-        for(let i = 0; i < data.length; i++) {
-            let furthest = i;
-            for(let j = i; j < data.length; j++) {
-                if(data[furthest].totalDistance < data[j].totalDistance) {
-                    furthest = j;
-                }
-            }
-            const temp = data[i];
-            data[i] = data[furthest];
-            data[furthest] = temp;
-        }
-        this.setState({sortedAndFilteredData: data});
+    sortFurthest(data1, data2) {
+        return (data1.totalDistance < data2.totalDistance);       
     }
-    sortShortest() {
-        let data = this.state.sortedAndFilteredData;
-        for(let i = 0; i < data.length; i++) {
-            let shortest = i;
-            for(let j = i; j < data.length; j++) {
-                if(data[shortest].totalDistance > data[j].totalDistance) {
-                    shortest = j;
-                }
-            }
-            const temp = data[i];
-            data[i] = data[shortest];
-            data[shortest] = temp;
-        }
-        this.setState({sortedAndFilteredData: data});
+    sortShortest(data1, data2) {
+        return (data1.totalDistance > data2.totalDistance)        
     }    
-    sortLongest() {
-        let data = this.state.sortedAndFilteredData;
-        for(let i = 0; i < data.length; i++) {
-            let longest = i;
-            for(let j = i; j < data.length; j++) {
-                if(data[longest].totalSeconds < data[j].totalSeconds) {
-                    longest = j;
-                }
-            }
-            const temp = data[i];
-            data[i] = data[longest];
-            data[longest] = temp;
-        }
-        this.setState({sortedAndFilteredData: data});
+    sortLongest(data1, data2) {
+        return (data1.totalSeconds < data2.totalSeconds);        
     }
-    sortQuickest() {
-        let data = this.state.sortedAndFilteredData;
-        for(let i = 0; i < data.length; i++) {
-            let quickest = i;
-            for(let j = i; j < data.length; j++) {
-                if(data[quickest].totalSeconds > data[j].totalSeconds) {
-                    quickest = j;
-                }
-            }
+    sortQuickest(data1, data2) {      
+        return (data1.totalSeconds > data2.totalSeconds);        
+    }
+    selectionSort(testCondition) {
+        let data = this.state.sortedAndFilteredData;        
+        for(let i = 0; i < data.length; i++) {       
+            let best = i;
+            for(let j = i; j < data.length; j++)   
+                if(testCondition(data[best], data[j])) 
+                    best = j;                                                
             const temp = data[i];
-            data[i] = data[quickest];
-            data[quickest] = temp;
+            data[i] = data[best];
+            data[best] = temp;
         }
         this.setState({sortedAndFilteredData: data});
     }
@@ -204,24 +158,32 @@ class ActivitiesScreen extends React.Component{
         const options = document.getElementById('sortOptions');
         const option = options.options[options.selectedIndex].value;
         switch(option) {
-            case 'newest':   this.sortNewest();   return;
-            case 'oldest':   this.sortOldest();   return;     
-            case 'furthest': this.sortFurthest(); return;
-            case 'shortest': this.sortShortest(); return;      
-            case 'longest':  this.sortLongest();  return;      
-            case 'quickest': this.sortQuickest(); return;              
+            case 'newest':   this.selectionSort(this.sortNewest);   return;
+            case 'oldest':   this.selectionSort(this.sortOldest);   return;     
+            case 'furthest': this.selectionSort(this.sortFurthest); return;
+            case 'shortest': this.selectionSort(this.sortShortest); return;      
+            case 'longest':  this.selectionSort(this.sortLongest);  return;      
+            case 'quickest': this.selectionSort(this.sortQuickest); return;              
         }
     }
     filterDate() {
         this.setState({filteringDate: true});
     }
+    filterDistance() {
+        this.setState({filteringDistance: true});
+    }
+    filterTime() {
+        this.setState({filteringTime: true});
+    }
     onChangeFilter() {
         const options = document.getElementById('filterOptions');
         const option = options.options[options.selectedIndex].value;
         switch(option) {            
-            case 'run':     this.filterRuns();     return;
-            case 'workout': this.filterWorkouts(); return;     
-            case 'date':    this.filterDate(); return;  
+            case 'run'      : this.filterRuns();     return;
+            case 'workout'  : this.filterWorkouts(); return;     
+            case 'date'     : this.filterDate();     return;  
+            case 'distance' : this.filterDistance(); return;
+            case 'time'     : this.filterTime();     return;
         }
     }
 
@@ -229,10 +191,66 @@ class ActivitiesScreen extends React.Component{
         this.setState({filteringDate: false});
     }
 
+    closeDistanceFilter() {
+        this.setState({filteringDistance: false});        
+    }
+
+    closeTimeFilter() {
+        this.setState({filteringTime: false});        
+    }
+
+    applyTimeFilter(fastest, slowest) {       
+        this.closeTimeFilter();
+        let parts = fastest.split(':');
+        let fastestTime = parseInt(parts[0]) * 60 * 60;
+        console.log(parts);
+        fastestTime += parseInt(parts[1]) * 60;
+        fastestTime += parseInt(parts[2]);
+        console.log(`fastest ${fastestTime}`);
+        parts = slowest.split(':');
+        let slowestTime = parseInt(parts[0]) * 60 * 60;
+        slowestTime += parseInt(parts[1]) * 60;
+        slowestTime += parseInt(parts[2]);
+        console.log(`slowest ${slowestTime}`);
+        const data = this.state.sortedAndFilteredData;
+        const timeFilteredData = [];
+        for(let i = 0; i < data.length; i++)
+            if(data[i].totalSeconds >= fastestTime && data[i].totalSeconds <= slowestTime)
+                timeFilteredData.push(data[i]);
+       
+        this.setState({sortedAndFilteredData: timeFilteredData});        
+    }
+
+    applyDistanceFilter(low, high) {
+        this.closeDistanceFilter();
+        console.log(low);
+        console.log(high);
+        const distanceFilteredData = [];
+        const data = this.state.sortedAndFilteredData;
+        for(let i = 0; i < data.length; i++)
+            if(data[i].totalDistance >= low && data[i].totalDistance <= high)
+                distanceFilteredData.push(data[i]);       
+        this.setState({sortedAndFilteredData: distanceFilteredData});
+    }
+    
     applyDateFilter(startDate, endDate) {
         this.closeDateFilter();
+        const dateFilteredData = [];
+        const data = this.state.sortedAndFilteredData;
+        for(let i = 0; i < data.length; i++) 
+        {            
+            if(this.compareNewestDate(
+                startDate, data[i].date) 
+                && this.compareOldestDate(
+                    endDate, data[i].date)) 
+            {
+                dateFilteredData.push(data[i]);
+            }
+        }
         console.log(startDate);
         console.log(endDate);
+        this.setState({sortedAndFilteredData: dateFilteredData});
+        console.log(this.state.sortedAndFilteredData);
     }
 
     render() {
@@ -256,6 +274,7 @@ class ActivitiesScreen extends React.Component{
                     <div className='filter-options'>
                         <h5>filter</h5>    
                         <select name='filter' id='filterOptions' onChange={this.onChangeFilter}>
+                            <option>Select</option>
                             <option value='date'>Date</option>
                             <option value='distance'>Distance</option>
                             <option value='time'>Time</option>
@@ -286,6 +305,14 @@ class ActivitiesScreen extends React.Component{
                     {this.state.filteringDate ? <DateFilter 
                     onCloseCallback={this.closeDateFilter}
                     onApplyCallback={this.applyDateFilter}/> : <div/>}
+
+                    {this.state.filteringDistance ? <DistanceFilter 
+                    onCloseCallback={this.closeDistanceFilter}
+                    onApplyCallback={this.applyDistanceFilter}/> : <div/>}
+
+                    {this.state.filteringTime ? <TimeFilter 
+                    onCloseCallback={this.closeTimeFilter}
+                    onApplyCallback={this.applyTimeFilter}/> : <div/>}
                 </div>         
             </div>
         );

@@ -1,7 +1,7 @@
 import React from 'react';
 import '../modalFilter.css';
 
-class DateFilter extends React.Component {
+class DistanceFilter extends React.Component {
     constructor() {
         super();
         this.state = {};
@@ -15,23 +15,23 @@ class DateFilter extends React.Component {
                 <button className='close-button' 
                 onClick={this.props.onCloseCallback}>X</button>
                 <div className='modal-content'>
-                    <div className='start-date'>
-                        <label>Start Date</label>                               
-                        <input type="date" id='startDate'></input>
+                    <div className='low-distance'>
+                        <label>Lowest</label>                               
+                        <input type="text" id='lowDistance'></input>
                     </div>
                     <div>
-                        <label>End Date</label>                               
-                        <input type="date" id='endDate'></input>
+                        <label>Highest</label>                               
+                        <input type="text" id='highDistance'></input>
                     </div>
                     <button className='apply-button'
                     onClick={() => {                        
-                        const start = document.getElementById('startDate').value;
-                        const end   = document.getElementById('endDate').value;
-                        this.props.onApplyCallback(start, end);
+                        const low  = document.getElementById('lowDistance').value;
+                        const high = document.getElementById('highDistance').value;
+                        this.props.onApplyCallback(low, high);
                     }}>Apply</button>
                 </div>
             </div>
         );
     }
 }
-export default DateFilter;
+export default DistanceFilter;

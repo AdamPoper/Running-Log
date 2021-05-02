@@ -17,11 +17,17 @@
             const data = await response.json();
             console.log(data);
         }
-        addRun();
+        async function deleteRun() {
+            const response = await fetch('/api/delete-record');
+            const data = await response.json();
+            console.log(data);
+        }
+        //addRun();
     </script>
     <body>
         <h1>Hello World</h1>
         <input type="date"></input>
+        <button onclick="deleteRun()">Delete</button>
     </body>
     
 </html>

@@ -147,6 +147,12 @@ app.post('/api/add-single-workout', (request, response) => {
     }).catch((err) => console.log(err));
 });
 
+app.get('/api/delete-record', (request, response) => {
+    console.log('deleting record');
+    mongoose.collection('RunningLogDatabase').deleteOne({date: '2021-05-02'});
+    response.json({message: 'thanks for deleting'});
+});
+
 
 ///////////////////////////////////
 // Program Utility Functions
@@ -348,18 +354,3 @@ async function addExistingRunData() {
         }
     });
 }
-
-/*
-const run = new Run({
-        distance: runData.distance,
-        unit: runData.unit,
-        date: runData.date,
-        time: runData.time,
-        description: runData.description
-    });
-
-    run.save().then((result) => {
-        createRun(run);     // creates a run object to go into the activities array
-        response.json({result});  
-    }).catch((err) => console.log(err));
-*/
