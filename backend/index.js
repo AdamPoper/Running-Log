@@ -7,6 +7,8 @@ const dotenv = require('dotenv');
 const Run = require('./models/Run.js');
 const Workout = require('./models/workout.js');
 const fs = require('fs');
+const { db } = require('./models/Run.js');
+const { ObjectId } = require('bson');
 
 const app = express();
 dotenv.config();
@@ -147,9 +149,27 @@ app.post('/api/add-single-workout', (request, response) => {
     }).catch((err) => console.log(err));
 });
 
-app.get('/api/delete-record', (request, response) => {
+
+// deletes a document from the Mongo Database and the activities array
+app.post('/api/delete-record', (request, response) => {
     console.log('deleting record');
-    mongoose.collection('RunningLogDatabase').deleteOne({date: '2021-05-02'});
+    const deleteData = request.body;
+    console.log(deleteData);
+    let collection;
+    switch(deleteData.type)
+    {
+        case 'run':     collection = 'runs';     break;
+        case 'workout': collection = 'workouts'; break;
+    }   
+    db.collection(collection).deleteOne({_id: ObjectId(deleteData.id)});
+    for(let i = 0; i < activities.length; i++)
+    {
+        if(activities[i].id == deleteData.id)
+        {
+            console.log('removing doc from activities');    
+            activities.splice(i, 1);
+        }   
+    }
     response.json({message: 'thanks for deleting'});
 });
 

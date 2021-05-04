@@ -43,7 +43,7 @@ class ActivitiesScreen extends React.Component{
         const res_data = await response.json();
         this.setState({activityData: res_data.activitiesArray});
         this.setState({sortedAndFilteredData: res_data.activitiesArray});
-        //console.log(this.state.activityData);
+        console.log(this.state.activityData);
     }
     componentDidMount() {
         this.initActivityData();        
@@ -253,6 +253,39 @@ class ActivitiesScreen extends React.Component{
         console.log(this.state.sortedAndFilteredData);
     }
 
+    async deleteDocument(doc) {
+        const options = {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(doc)
+        };
+        const response = await fetch('api/delete-record', options);
+        const data = await response.json();
+        console.log(data);
+        const activities = this.state.activityData;
+        for(let i = 0; i < activities.length; i++)
+        {
+            if(activities[i].id == doc.id)
+            {
+                console.log('deleting doc');
+                activities.splice(i, 1);
+            }
+        }
+        this.setState({activitiesArray: activities});
+        const filteredActivities = this.state.sortedAndFilteredData;
+        for(let i = 0; i < filteredActivities.length; i++)
+        {
+            if(filteredActivities[i].id == doc.id)
+            {
+                console.log('deleting doc');
+                filteredActivities.splice(i, 1);
+            }
+        }
+        this.setState({sortedAndFilteredData: filteredActivities});        
+    }
+
     render() {
         const activityComponents = this.state.sortedAndFilteredData.map(activityData => 
             <Activity key={activityData.id} data={activityData} onClickCallback={this.setSelectedActivity}/>);
@@ -283,10 +316,14 @@ class ActivitiesScreen extends React.Component{
                         </select>
                     </div>  
                     <button onClick={() => {
+                        console.log('deleting');
+                        this.deleteDocument(this.state.selectedActivityData);
+                    }}>Delete</button>
+                    <button onClick={() => {
                             this.setState({sortedAndFilteredData: this.state.activityData});
                             const filterOptions = document.getElementById('filterOptions').options;
                             filterOptions[0].selected = true;                                                        
-                        }} className='reset-button'>Reset</button>                    
+                        }}>Reset</button>                    
                 </div>                         
                 <div className='activity-viewing'>
                     <div className='activities-viewer'>

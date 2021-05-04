@@ -6,7 +6,9 @@ class Activity extends React.Component {
         this.state = {
             date: '',
             activityInfo: '',
-            description: ''
+            description: '',
+            id: '',
+            type: ''
         };
         this.onSelectHandle = this.onSelectHandle.bind(this);
     }
@@ -15,7 +17,9 @@ class Activity extends React.Component {
 
         this.setState({date: info.date});        
         this.setState({activityInfo: info.displayString});        
-        this.setState({description: info.description});        
+        this.setState({description: info.description});   
+        this.setState({id: info.id});    
+        this.setState({type: info.activityType}); 
     }
     
     onSelectHandle() {
