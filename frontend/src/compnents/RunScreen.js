@@ -11,35 +11,36 @@ class RunScreen extends React.Component {
 
     async onSave() {
         const distance = parseFloat(document.getElementById('distance').value);
+        document.getElementById('distance').value = '';
+        
         if(isNaN(distance)) {
             console.log('distance is NaN');
+            alert('Enter a distance');
             return;
         }
-        console.log(distance);
 
         const units = document.getElementById('units');
         const unit = units.options[units.selectedIndex].value;
-        console.log(unit);
 
-        const hours = document.getElementById('hours').value;
-        const mins  = document.getElementById('mins').value;
-        const secs  = document.getElementById('secs').value;
-        if(isNaN(hours) || isNaN(mins) || isNaN(secs)) {
-            console.log('No NaN values');
-            return;
-        }
-        
-        console.log(hours);
-        console.log(mins);
-        console.log(secs);
+        let hours = document.getElementById('hours').value;
+        let mins  = document.getElementById('mins').value;
+        let secs  = document.getElementById('secs').value;
+
+        hours = hours == '' ? 0 : hours;
+        mins = mins == '' ? 0 : mins;
+        secs = secs == '' ? 0 : secs;                  
 
         const dateControl = document.querySelector('input[type="date"]');
         const date = dateControl.value;
-        console.log(date);
 
-        const desc = document.getElementById('desc').value;
-        console.log(desc);
-        
+        let desc = document.getElementById('desc').value;
+        desc = desc == '' ? ' ' : desc;
+
+        document.getElementById('hours').value = '';
+        document.getElementById('mins').value  = '';
+        document.getElementById('secs').value  = '';
+        document.getElementById('desc').value  = '';
+
         const runData = {
             distance: distance,
             unit: unit,
@@ -61,8 +62,7 @@ class RunScreen extends React.Component {
         };
         const response = await fetch('/api/add-single-run', options);
         const res_data = await response.json();
-        console.log(res_data);
-        
+        console.log(res_data);        
     }
     
     render() {

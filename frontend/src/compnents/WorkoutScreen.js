@@ -20,6 +20,7 @@ class WorkoutScreen extends React.Component {
         if(isNaN(splitDistance))
         {
             console.log('Distance is NaN');
+            alert('Enter a split distance');
             return;
         }
         const units = document.getElementById('units');
@@ -35,6 +36,11 @@ class WorkoutScreen extends React.Component {
             date 
         };
         console.log(workoutData);
+
+        document.getElementById('distance').value = '';
+        document.getElementById('timeArea').value = '';
+        document.getElementById('workoutDescription').value = '';
+
         const options = {
             method: 'POST',
             headers: {
