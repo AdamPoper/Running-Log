@@ -178,11 +178,6 @@ app.post('/api/delete-record', (request, response) => {
 // Program Utility Functions
 ///////////////////////////////////
 
-function deleteRecordFromDatabase(condition) {
-    Run.collection.deleteMany(condition);
-    console.log('deleted all entries that match ' + condition);
-}
-
 // Query all entrys from MongoDB and initialize them for the program
 function initActivities() {
     Run.find().then((result) => { initRuns(result) })
@@ -299,7 +294,7 @@ function calcRunPace(time, dist) {
 // calculate average pace per split for a workout with the given splits
 function calcSplitsAverage(splits) {
     let totalSeconds = 0;
-    for(let i = 0; i < splits.length; i++) {
+    for(let i = 0; i < splits.length; i++) {    
         const mins = splits[i].split(':')[0];
         const secs = splits[i].split(':')[1];
         totalSeconds += ((parseFloat(mins) * 60) + parseFloat(secs));        

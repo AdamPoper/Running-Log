@@ -3,6 +3,7 @@ import Icon from './Icon.js';
 import RunScreen from './RunScreen.js';
 import WorkoutScreen from './WorkoutScreen.js';
 import ActivitiesScreen from './ActivityScreen.js';
+import ToolsScreen from './ToolsScreen.js';
 
 import '../App.css';
 
@@ -41,7 +42,7 @@ class MainContent extends React.Component {
             },
             {
                 title: 'Tools',
-                screen: <RunScreen />,
+                screen: <ToolsScreen />,
                 id: 4
             }
         ];

@@ -1,0 +1,108 @@
+h2 {
+    font-size:28px;
+}
+
+h3 {
+    font-size: 28px;
+}
+
+.calculators {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    margin-top:5%;
+}
+
+.unit-convert {
+   margin-left: 5%;
+}
+
+.unit-convert h2 {
+    margin-left: 12%;
+}
+
+.unit-convert button {
+   margin-left: 20%;
+   margin-top: 5%;
+}
+
+.distance-io {
+    display: flex;
+    flex-direction: row;
+    margin-top: 5%;
+}
+
+.distance-io h3 {
+    margin-right: 25px;
+}
+
+.unit-convert input {
+    font-size: 28px;
+    margin-right: 25px;
+    background: rgba(255, 255, 255, 0.8);
+    color: rgb(133, 133, 133, 0.8);
+    border-radius: 20px;
+    width: 25%;
+    min-width: 50px;
+    border: rgb(199, 199, 199);
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
+
+select {
+    width: 10%;
+    min-width: 100px;
+    margin-right: 35px;
+}
+
+.unit-select {
+    margin-top: 5%;     
+    display: flex;
+    flex-direction: row;       
+}
+
+.pace-calculator {
+    margin-left: 0%;
+}
+
+.pace-calculator h2 {
+    text-align: center;
+}
+
+.pace-calculator label {
+    font-size: 24px;
+}
+
+.pace-calc-io {
+    margin-top: 5%;
+    margin-left: 30%;
+}
+
+.pace-calculator select {
+    min-width: 170px;
+}
+
+.pace-calculator input {
+    font-size: 28px;
+    width: 25%;
+    background: rgba(255, 255, 255, 0.8);
+    color: rgb(133, 133, 133, 0.8);
+    border-radius: 20px;
+    border: rgb(199, 199, 199);
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
+
+.pace-calc-actions {
+    margin-top: 5%;
+    margin-left: 10%;
+}
+
+.pace-calc-actions button {
+    margin-top: 5%;
+    margin-left: 35%;
+}
