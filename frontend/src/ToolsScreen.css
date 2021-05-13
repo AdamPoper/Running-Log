@@ -77,7 +77,7 @@ select {
 
 .pace-calc-io {
     margin-top: 5%;
-    margin-left: 30%;
+    
 }
 
 .pace-calculator select {
@@ -99,10 +99,10 @@ select {
 
 .pace-calc-actions {
     margin-top: 5%;
-    margin-left: 10%;
+    margin-left: 0%;
+    text-align: center;
 }
 
 .pace-calc-actions button {
-    margin-top: 5%;
-    margin-left: 35%;
+   
 }

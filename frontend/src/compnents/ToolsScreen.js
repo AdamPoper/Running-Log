@@ -4,7 +4,11 @@ import '../ToolsScreen.css';
 class ToolsScreen extends React.Component {
     constructor() {
         super();
-        this.state = {}
+        this.state = {};
+
+        this.onCalcDistance = this.onCalcDistance.bind(this);
+        this.onCalcPace = this.onCalcPace.bind(this);
+        this.onCalcTime = this.onCalcTime.bind(this);
     }
 
     componentDidMount() {
@@ -38,19 +42,33 @@ class ToolsScreen extends React.Component {
         return timeInSeconds;
     }
 
-    convertToTime(seconds) {
-        const hours = parseInt(seconds / 60 / 60);
-        //seconds -= hours;
-        const minutes = seconds 
+    convertToTime(totalSeconds) {
+        const hours = Math.floor(parseFloat(totalSeconds / 60 / 60));
+        totalSeconds -= (hours * 60 * 60);
+        const minutes = Math.floor(totalSeconds / 60);
+        //totalSeconds -= (minutes * 60);
+        const seconds = (totalSeconds - (minutes * 60)).toFixed(2);        
+        return `${hours}:${minutes}:${seconds}`;
     }
 
     onCalcPace() {
-        const distance = parseFloat(document.getElementById('distance-input').value);
+        const conversionFactor = 1.609;
+        let distance = parseFloat(document.getElementById('distance-input').value);
+        const distanceUnits = document.getElementById('distance-unit');
+        const distanceUnit = distanceUnits.options[distanceUnits.selectedIndex].value;
+        if(distanceUnit === 'kilos')
+            distance /= conversionFactor;        
         const timeStr = document.getElementById('time-input').value;       
         const time = timeStr.split(':');
+        console.log('time ' + time);
         const timeInSeconds = this.convertTimeToSeconds(time);
-        const distancePerUnit = timeInSeconds / distance;
-        document.getElementById('pace-input').value = String(distancePerUnit);
+        console.log('time in seconds ' + timeInSeconds);
+        let secondsPerUnit = timeInSeconds / distance;
+        const paceUnits = document.getElementById('pace-unit');
+        const paceUnit = paceUnits.options[paceUnits.selectedIndex].value;
+        if(paceUnit === 'kilo')
+            secondsPerUnit /= conversionFactor; 
+        document.getElementById('pace-input').value = this.convertToTime(secondsPerUnit);
     }
 
     onCalcTime() {
@@ -101,6 +119,11 @@ class ToolsScreen extends React.Component {
                         <div className='pace-calc-io'>
                             <label>Distance</label>
                             <input id='distance-input'/>
+                            <select id='distance-unit'>
+                                <option value='miles'>Miles</option>
+                                <option value='kilos'>Kilometers</option>
+                                <option value='Meters'>Meters</option>
+                            </select>
                         </div>
                         <div className='pace-calc-io'>
                             <label>Time</label>
@@ -109,19 +132,19 @@ class ToolsScreen extends React.Component {
                         <div className='pace-calc-io'>
                         <label>Pace</label>
                             <input id='pace-input'/>
-                        </div>
-                        <div className='pace-calc-actions'>
-                            <select>
-                                <option value='miles'>Miles</option>
-                                <option value='kilometers'>Kilometers</option>
-                                <option value='Meters'>Meters</option>
+                            <label style={{marginLeft: '5%'}}>Per</label>
+                            <select id='pace-unit'>
+                                <option value='mile'>Mile</option>
+                                <option value='kilo'>Kilometer</option>
                             </select>
+                        </div>
+                        <div className='pace-calc-actions'>                            
                             <select id='factor-calc'>
                                 <option value='distance'>Distance</option>
                                 <option value='time'>Time</option>
-                                <option value='pace'>pace</option>                                
+                                <option value='pace'>Pace</option>                                
                             </select>
-                            <button>Calculate</button>
+                            <button onClick={() => this.onCalculate()}>Calculate</button>
                         </div>
                     </div>
                 </div>
