@@ -59,8 +59,7 @@ class ToolsScreen extends React.Component {
         if(distanceUnit === 'kilos')
             distance /= conversionFactor;        
         const timeStr = document.getElementById('time-input').value;       
-        const time = timeStr.split(':');
-        console.log('time ' + time);
+        const time = timeStr.split(':');        
         const timeInSeconds = this.convertTimeToSeconds(time);
         console.log('time in seconds ' + timeInSeconds);
         let secondsPerUnit = timeInSeconds / distance;
@@ -72,11 +71,48 @@ class ToolsScreen extends React.Component {
     }
 
     onCalcTime() {
-
+        const conversionFactor = 1.609;
+        let distance = parseFloat(document.getElementById('distance-input').value);
+        const distanceUnits = document.getElementById('distance-unit');
+        const distanceUnit = distanceUnits.options[distanceUnits.selectedIndex].value;
+        if(distanceUnit === 'kilos')
+            distance /= conversionFactor;
+        const paceStr = document.getElementById('pace-input').value;
+        const paceArrayRaw = paceStr.split(':');
+        const paceArray = [];
+        paceArray.push(0);
+        paceArray.push(paceArrayRaw[0]);
+        paceArray.push(paceArrayRaw[1]);
+        let paceSecsPerUnit = this.convertTimeToSeconds(paceArray);
+        const paceUnits = document.getElementById('pace-unit');
+        const paceUnit = paceUnits.options[paceUnits.selectedIndex].value;
+        if(paceUnit === 'kilo')
+            paceSecsPerUnit *= conversionFactor;
+        document.getElementById('time-input').value = this.convertToTime(paceSecsPerUnit * distance);
     }
 
     onCalcDistance() {
-
+        const conversionFactor = 1.609;
+        const timeStr = document.getElementById('time-input').value;       
+        const time = timeStr.split(':');
+        const timeInSeconds = this.convertTimeToSeconds(time);        
+        const paceStr = document.getElementById('pace-input').value;
+        const paceArrayRaw = paceStr.split(':');
+        const paceArray = [];
+        paceArray.push(0);
+        paceArray.push(paceArrayRaw[0]);
+        paceArray.push(paceArrayRaw[1]);
+        let paceSecsPerUnit = this.convertTimeToSeconds(paceArray);  
+        const paceUnits = document.getElementById('pace-unit');
+        const paceUnit = paceUnits.options[paceUnits.selectedIndex].value;
+        if(paceUnit === 'kilo')
+            paceSecsPerUnit *= conversionFactor;   
+        let distance = timeInSeconds / paceSecsPerUnit;
+        const distanceUnits = document.getElementById('distance-unit');
+        const distanceUnit = distanceUnits.options[distanceUnits.selectedIndex].value;
+        if(distanceUnit === 'kilos')
+            distance *= conversionFactor;
+        document.getElementById('distance-input').value = distance;
     }
 
     onCalculate() {
